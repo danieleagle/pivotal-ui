@@ -41,14 +41,21 @@ const componentItems = [
   {text: 'Tooltips', link: 'tooltips'},
 ]
 
-const onPick = item => console.log('You selected ' + item.value)
-const onInitializeItems = callback => callback(['foo', 'food', 'bar'])
-const SearchBar = () => <Autocomplete onInitializeItems={onInitializeItems}
-                                      placeholder="Search"
-                                      onPick={onPick}/>
-
 export default class Sidebar extends React.PureComponent {
+  handleClick(event) {
+    e.preventDefault()
+    this.props.updateContent(event.target.href)
+  }
+
   render() {
+    const searchItems = componentItems.concat(styleItems)
+
+    const onPick = item => this.props.updateContent(searchItems.find(i => i.text == item).link)
+    const onInitializeItems = callback => callback(searchItems.map(item => item.text))
+    const SearchBar = () => <Autocomplete onInitializeItems={onInitializeItems}
+                                          placeholder="Search"
+                                          onPick={e => console.log(e)}/>
+
     const styles = styleItems
       .map((style, i) => <a key={i}
                             onClick={this.props.clickHandler}
@@ -57,7 +64,7 @@ export default class Sidebar extends React.PureComponent {
 
     const components = componentItems
       .map((component, i) => <a key={i}
-                                onClick={this.props.clickHandler}
+                                onClick={this.handleClick.bind(this)}
                                 href={component.link}
                                 className="sidebar--item">{component.text}</a>)
 
