@@ -34,6 +34,12 @@ parent: 00_form_introduction
 ---
 
 ```html_example
+<form class="form-horizontal">
+  <input type="checkbox" class="checkbox"> Check me out</input>
+  <input type="checkbox" class="checkbox"> Check me out</input>
+  <input type="checkbox" class="checkbox"> Check me out</input>
+</form>
+
 <form role="form">
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>

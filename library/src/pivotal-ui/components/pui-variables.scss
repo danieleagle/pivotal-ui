@@ -3,6 +3,8 @@
 // in Sass 3.3 this can be improved with: function-exists(twbs-font-path)
 $bootstrap-sass-asset-helper: (twbs-font-path("") != unquote('twbs-font-path("")')) !default;
 
+$base-size: 8px;
+
 // Accent colors - teal for now
 // -------------------------
 

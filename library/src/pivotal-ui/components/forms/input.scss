@@ -1,0 +1,60 @@
+@import "../pui-variables";
+
+$border: 1px solid $gray-9;
+$border-radius: 2px;
+
+label {
+  &.control-label {
+    text-align: right;
+  }
+}
+
+input, select {
+  font-size: $font-size-small;
+}
+
+select {
+  display: block;
+  width: 100%;
+  height: 40px;
+  border: $border;
+  border-radius: $border-radius;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  color: $brand-primary;
+}
+
+// We are being more specific than something else that's doing "html input:disabled", else we'd do *:disabled
+html body input, html body select {
+  &:disabled {
+    cursor: not-allowed;
+    color: $dark-5;
+  }
+}
+
+input:not([type="radio"]):not([type="checkbox"]) {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: $border;
+  border-radius: $border-radius;
+
+  &:disabled {
+    background-color: $gray-9;
+    opacity: .5;
+  }
+}
+
+input[type="checkbox"], input[type="radio"] {
+  margin-right: 8px;
+}
+
+.checkbox, .radio, .checkbox-inline, .radio-inline {
+  label, input {
+    cursor: pointer;
+  }
+}
+
+.checkbox-inline, .radio-inline {
+  display: inline;
+  margin-right: 16px;
+}
