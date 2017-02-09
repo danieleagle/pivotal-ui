@@ -1,5 +1,4 @@
-import puiAliases from '../../helpers/pui-aliases';
-import NoErrorsPlugin from 'webpack/lib/NoErrorsPlugin';
+const NoErrorsPlugin = require('webpack/lib/NoErrorsPlugin');
 
 module.exports = {
   devtool: 'eval',
@@ -8,7 +7,25 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader?sourceMaps=true'
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.json$/,
+        use: 'json-loader'
+      },
+      {
+        test: /\.(eot|ttf|woff)$/,
+        loader: 'url-loader',
+      },
+      {
+        test: /\.s?css$/,
+        loader: 'css-loader!sass-loader'
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: 'file-loader!image-webpack-loader'
       }
     ]
   },
@@ -17,13 +34,5 @@ module.exports = {
     new NoErrorsPlugin()
   ],
   quiet: true,
-  resolve: {
-    alias: Object.assign({
-      'raf': `${__dirname}/../../spec/pivotal-ui-react/support/mock_raf.js`,
-      'performance-now': `${__dirname}/../../spec/pivotal-ui-react/support/mock_performance_now.js`,
-      'lodash.throttle': `${__dirname}/../../spec/pivotal-ui-react/support/mock_throttle.js`,
-      'fbjs/lib/warning': `${__dirname}/../../spec/pivotal-ui-react/support/mock_warning.js`
-    }, puiAliases)
-  },
   watch: true
 }
