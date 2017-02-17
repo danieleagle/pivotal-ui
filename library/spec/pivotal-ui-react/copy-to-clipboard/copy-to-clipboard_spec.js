@@ -1,78 +1,86 @@
-require('../spec_helper');
-
-const {itPropagatesAttributes} = require('../support/shared_examples');
+import '../spec_helper'
+import ReactTestUtils from 'react-addons-test-utils'
+import {CopyToClipboard, CopyToClipboardButton} from '../../../src/pivotal-ui-react/copy-to-clipboard/copy-to-clipboard')
 
 describe('CopyToClipboard', () => {
-  const text = 'some copy text';
-  let onClick, CopyToClipboard, CopyToClipboardButton;
+  const renderComponent = (props) => {
+    return ReactTestUtils.renderIntoDocument(<CopyToClipboard {...props}/>)
+  }
+  const text = 'some copy text'
+  let onClick, CopyToClipboard, CopyToClipboardButton
 
   beforeEach(() => {
-    CopyToClipboard = require('../../../src/pivotal-ui-react/copy-to-clipboard/copy-to-clipboard').CopyToClipboard;
-    CopyToClipboardButton = require('../../../src/pivotal-ui-react/copy-to-clipboard/copy-to-clipboard').CopyToClipboardButton;
-    onClick = jasmine.createSpy('onClick');
-    spyOn(document, 'execCommand');
-  });
+    onClick = jasmine.createSpy('onClick')
+    spyOn(document, 'execCommand')
+  })
 
   describe('CopyToClipboard (basic)', () => {
-    beforeEach(() => {
-      ReactDOM.render(<CopyToClipboard {...{text, onClick, className: 'test-class', id: 'test-id', style: {opacity: '0.5'}}}/>, root);
-    });
-
     it('renders the text', () => {
-      expect('.sr-only').toHaveText(text);
-    });
+      const result = renderComponent({text, onClick, className: 'test-class', id: 'test-id', style: {opacity: '0.5'}})
+      const component = ReactTestUtils.findRenderedDOMComponentWithClass(result, 'sr-only')
+      expect(component.textContent).toContain(text)
+    })
 
-    itPropagatesAttributes('.copy-to-clipboard', {className: 'test-class', id: 'test-id', style: {opacity: '0.5'}});
+
+    it('propagates attributes', () => {
+      const result = renderComponent({text, onClick, className: 'test-class', id: 'test-id', style: {opacity: '0.5'}})
+      const component = ReactTestUtils.findRenderedDOMComponentWithClass(result, 'copy-to-clipboard')
+
+      expect(component.className).toContain('test-class')
+      expect(component.id).toEqual('test-id')
+      expect(component.className).toContain('test-class')
+    })
+    itPropagatesAttributes('.copy-to-clipboard', {className: 'test-class', id: 'test-id', style: {opacity: '0.5'}})
 
     describe('when clicking on copy to clipboard', () => {
       beforeEach(() => {
-        $('.copy-to-clipboard').simulate('click');
-      });
+        $('.copy-to-clipboard').simulate('click')
+      })
 
       it('copies the text to the clipboard', () => {
-        expect(document.execCommand).toHaveBeenCalledWith('copy');
-      });
+        expect(document.execCommand).toHaveBeenCalledWith('copy')
+      })
 
       it('calls the provided callback', () => {
-        expect(onClick).toHaveBeenCalled();
-      });
-    });
-  });
+        expect(onClick).toHaveBeenCalled()
+      })
+    })
+  })
 
   describe('CopyToClipboardButton', () => {
-    let Tooltip;
+    let Tooltip
 
     beforeEach(() => {
-      ReactDOM.render(<CopyToClipboardButton {...{text, onClick, className: 'test-class', id: 'test-id', style: {opacity: '0.5'}}}/>, root);
-    });
+      ReactDOM.render(<CopyToClipboardButton {...{text, onClick, className: 'test-class', id: 'test-id', style: {opacity: '0.5'}}}/>, root)
+    })
 
-    itPropagatesAttributes('.copy-to-clipboard-button', {className: 'test-class', id: 'test-id', style: {opacity: '0.5'}});
+    itPropagatesAttributes('.copy-to-clipboard-button', {className: 'test-class', id: 'test-id', style: {opacity: '0.5'}})
 
 
     describe('clicking on the button', () => {
       beforeEach(() => {
-        Tooltip = require('pui-react-tooltip').Tooltip;
-        spyOn(Tooltip.prototype, 'render').and.callThrough();
-        $('svg.icon-copy').simulate('click');
-      });
+        Tooltip = require('pui-react-tooltip').Tooltip
+        spyOn(Tooltip.prototype, 'render').and.callThrough()
+        $('svg.icon-copy').simulate('click')
+      })
 
       it('renders a tooltip that says "Copied"', () => {
-        expect('.tooltip').toContainText('Copied');
-      });
+        expect('.tooltip').toContainText('Copied')
+      })
 
       it('hides tooltip after 5 seconds', () => {
-        expect('.tooltip-container-visible').toExist();
-        jasmine.clock().tick(6000);
-        expect('.tooltip-container-visible').not.toExist();
-      });
+        expect('.tooltip-container-visible').toExist()
+        jasmine.clock().tick(6000)
+        expect('.tooltip-container-visible').not.toExist()
+      })
 
       it('copies the text to the clipboard', () => {
-        expect(document.execCommand).toHaveBeenCalledWith('copy');
-      });
+        expect(document.execCommand).toHaveBeenCalledWith('copy')
+      })
 
       it('calls the provided callback', () => {
-        expect(onClick).toHaveBeenCalled();
-      });
-    });
-  });
-});
+        expect(onClick).toHaveBeenCalled()
+      })
+    })
+  })
+})
